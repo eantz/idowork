@@ -1,33 +1,55 @@
 @tailwind base;
 @tailwind components;
+
+@layer components {
+  .btn-default {
+    @apply px-4 py-1 border rounded-md;
+  }
+
+  .fieldset-default {
+    @apply flex flex-col mb-5;
+  }
+
+  .fieldset-default label {
+    @apply text-gray-700
+  }
+
+  .fieldset-button {
+    @apply flex flex-row justify-end gap-x-2;
+  }
+
+  .fieldset-button button[type=button] {
+    @apply btn-default bg-white border-gray-600;
+  }
+
+  .fieldset-button button[type=button]:hover,
+  .fieldset-button button[type=button]:focus {
+    @apply bg-gray-400/25;
+  }
+
+  .fieldset-button button[type=submit] {
+    @apply btn-default bg-blue-600 border-blue-700 text-white;
+  }
+
+  .fieldset-button button[type=submit]:hover,
+  .fieldset-button button[type=submit]:focus {
+    @apply bg-blue-800;
+  }
+
+  .category-purple {
+    @apply border rounded border-purple-500 p-1 bg-purple-300 text-purple-900 font-semibold;
+  }
+
+  .category-green {
+    @apply border rounded border-slate-500 p-1 bg-slate-300 text-slate-900 font-semibold;
+  }
+
+  .category-yellow {
+    @apply border rounded border-yellow-500 p-1 bg-yellow-300 text-yellow-900 font-semibold;
+  }
+}
+
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
+@config "../../tailwind.config.js";
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-}
