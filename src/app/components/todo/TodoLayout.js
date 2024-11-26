@@ -4,6 +4,7 @@ import TodoForm from "./TodoForm";
 import { useDispatch, useSelector } from "react-redux";
 import { todoActions } from "@/app/store/todo";
 import TodoItem from "./TodoItem";
+import { register, login } from "@/fetcher/auth";
 
 const todoSections = {
   "today": "Today",
