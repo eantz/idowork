@@ -1,48 +1,63 @@
 import dayjs from "dayjs";
-import { insertTodo, removeTodo, toggleTodo } from "../app/fetcher/todo";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getTodo, updateTodo as fetcherUpdateTodo, deleteTodo as fetcherDeleteTodo } from "@/fetcher/todo";
+import { getTodo, updateTodo as fetcherUpdateTodo, deleteTodo as fetcherDeleteTodo, createTodo } from "@/fetcher/todo";
 import { removeEmptyValuesFromObject } from "@/lib/object";
 
- function getTodoSection(todoItem) {
+//  function getTodoSection(todoItem) {
 
-  if (todoItem.isDone) {
-    return 'done';
-  } else if (todoItem.schedule === '') {
-    return 'unscheduled';
-  }
+//   if (todoItem.isDone) {
+//     return 'done';
+//   } else if (todoItem.schedule === '') {
+//     return 'unscheduled';
+//   }
 
-  const now = dayjs();
-  const todoSchedule = dayjs(todoItem.schedule, 'YYYY-MM-DD');
+//   const now = dayjs();
+//   const todoSchedule = dayjs(todoItem.schedule, 'YYYY-MM-DD');
   
-  if (todoItem.schedule === now.format('YYYY-MM-DD')) {
-    return 'today';
-  } else if (todoSchedule.isBefore(now, 'day') && todoSchedule.isAfter(now.subtract(2, 'day'))) {
-    return 'past';
-  } else if (todoSchedule.isAfter(now, 'day') && todoSchedule.isBefore(now.add(2, 'day'))) {
-    return 'upcoming';
-  }
+//   if (todoItem.schedule === now.format('YYYY-MM-DD')) {
+//     return 'today';
+//   } else if (todoSchedule.isBefore(now, 'day') && todoSchedule.isAfter(now.subtract(2, 'day'))) {
+//     return 'past';
+//   } else if (todoSchedule.isAfter(now, 'day') && todoSchedule.isBefore(now.add(2, 'day'))) {
+//     return 'upcoming';
+//   }
 
-  return 'todo';
- }
+//   return 'todo';
+//  }
 
 export const fetchTodos = createAsyncThunk('todo/fetchTodos', async payload => {
   const listTodo = await getTodo(payload.timeConstraint, payload.status, payload.date);
   return listTodo;
 });
 
+export const insertTodo = createAsyncThunk('todo/insertTodo', async payload => {
+  const resp = await createTodo(payload.message, payload.scheduledAt);
+
+  if(resp.status !== 200) {
+    return resp;
+  }
+
+  return {
+    id: resp.data.id,
+    message: payload.message,
+    status: "NEW",
+    scheduledAt: payload.scheduledAt
+  };
+});
+
 export const updateTodo = createAsyncThunk('todo/updateTodo', async payload => {
   const resp = await fetcherUpdateTodo(payload.id, payload.message, payload.status, payload.scheduledAt);
   if(resp.status !== 200) {
     return resp;
-  } else {
-    return {
-      id: payload.id,
-      message: payload.message,
-      status: payload.status,
-      scheduledAt: payload.scheduledAt
-    }
   }
+    
+  return {
+    id: payload.id,
+    message: payload.message,
+    status: payload.status,
+    scheduledAt: payload.scheduledAt
+  }
+  
 });
 
 export const deleteTodo = createAsyncThunk('todo/deleteTodo', async payload => {
@@ -68,11 +83,11 @@ const todoSlice = createSlice({
   },
   reducers: {
     addTodo: function(state, action) {
-      const todoItem = insertTodo(action.payload);
+      // const todoItem = insertTodo(action.payload);
 
-      const todoSection = getTodoSection(todoItem);
+      // const todoSection = getTodoSection(todoItem);
 
-      state[todoSection].push(todoItem);
+      // state[todoSection].push(todoItem);
     },
     editTodo: function(state, action) {
       // const todoItem = editTodo(action.payload.modified);
@@ -186,6 +201,15 @@ const todoSlice = createSlice({
       })
       .addCase(deleteTodo.rejected, (state, action) => {
         // TODO
+      })
+      .addCase(insertTodo.pending, (state, action) => {
+        // TODO
+      })
+      .addCase(insertTodo.fulfilled, (state, action) => {
+        state.todo.push(action.payload)
+      })
+      .addCase(insertTodo.rejected, (state, action) => {
+        console.log(action);
       })
   }
 });

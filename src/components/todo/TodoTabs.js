@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TodoItem from "./TodoItem";
 import { fetchTodos } from "@/store/todo";
+import TodoItemForm from "./TodoItemFrom";
 
 function TodoTabs() {
   const todos = useSelector((state) => state.todo);
@@ -31,6 +32,9 @@ function TodoTabs() {
             </li>
           ))}
           
+          <li key="new" className="mb-2">
+            <TodoItemForm />
+          </li>
         </ul>
       </TabsContent>
       <TabsContent value="upcoming">Change your password here.</TabsContent>
