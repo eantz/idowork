@@ -60,10 +60,8 @@ export function Sidebar() {
               </a>
             </li>
           </ul>
-
+          
           <CategoriesMenu />
-          
-          
         </div>
       </aside>
     </>

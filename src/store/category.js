@@ -1,4 +1,4 @@
-import { insertCategory, getCategories, removeCategory, editCategory } from "../fetcher/category";
+import { insertCategory, getCategories, removeCategory, editCategory } from "../app/fetcher/category";
 import { createSlice } from "@reduxjs/toolkit";
 
 const categorySlice = createSlice({

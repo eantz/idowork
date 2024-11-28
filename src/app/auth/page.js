@@ -38,15 +38,12 @@ export default function Page() {
 
   async function onSubmit(values) {
     const res = await login(values.username, values.password);
-    console.log(res);
 
     const cookies = new Cookies(null, {path:'/'});
 
     if (res.status === 200) {
       cookies.set('token', res.data.accessToken);
       cookies.set('refreshToken', res.data.refreshToken);
-      // localStorage.setItem('token', res.data.accessToken);
-      // localStorage.setItem('refreshToken', res.data.refreshToken);
 
       router.push('/');
     } else {

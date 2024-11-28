@@ -5,7 +5,7 @@ import Dialog from "../Dialog";
 import FormCategory from "./FormCategory";
 import { useSelector, useDispatch } from "react-redux";
 import CategoryMenuItem from "./CategoryMenuItem";
-import {categoryActions} from "@/app/store/category";
+import {categoryActions} from "@/store/category";
 
 
 function CategoriesMenu() {

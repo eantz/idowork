@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import Dialog from "../Dialog";
 import TodoForm from "./TodoForm";
 import { useDispatch, useSelector } from "react-redux";
-import { todoActions } from "@/app/store/todo";
+import { todoActions } from "@/store/todo";
 import TodoItem from "./TodoItem";
-import { register, login } from "@/fetcher/auth";
+import TodoTabs from "./TodoTabs"
 
 const todoSections = {
   "today": "Today",
@@ -16,14 +16,14 @@ const todoSections = {
 
 function TodoLayout() {
   const [modalContent, setModalContent] = useState('');
-  const todo = useSelector((state) => state.todo);
-  const dispatch = useDispatch()
+  // const todo = useSelector((state) => state.todo);
+  // const dispatch = useDispatch()
 
-  useEffect(() => {
-    dispatch(todoActions.populateTodo({
-      type: 'force',
-    }));
-  }, [dispatch])
+  // useEffect(() => {
+  //   dispatch(todoActions.populateTodo({
+  //     type: 'force',
+  //   }));
+  // }, [dispatch])
 
   const modal = useRef();
 
@@ -58,8 +58,10 @@ function TodoLayout() {
         </div>
         
       </menu>
+
+      <TodoTabs />
       
-      {Object.entries(todoSections).map(([key, val]) => (
+      {/* {Object.entries(todoSections).map(([key, val]) => (
         <section className="flex flex-col mt-10" key={key}>
           <div className="flex flex-row items-center justify-stretch border-b border-b-gray-700 pb-2 mb-5">
             <h2 className="flex font-bold text-xl basis-11/12 grow">{val}</h2>
@@ -84,7 +86,7 @@ function TodoLayout() {
 
       <Dialog title="Add Todo" ref={modal}>
         {modalContent}
-      </Dialog>
+      </Dialog> */}
     </>
   )
 }

@@ -1,7 +1,7 @@
 'use client'
 
 import { useDispatch } from "react-redux";
-import {categoryActions} from "@/app/store/category";
+import {categoryActions} from "@/store/category";
 import React from "react";
 
 function CategoryMenuItem ({id, name, color, hookOnEdit}) {

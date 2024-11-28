@@ -10,7 +10,6 @@ const axiosInstance = axios.create({
 const authInterceptor = function(config) {
   const cookies = new Cookies(null, {path:'/'});
   const token = cookies.get('token');
-  // const token = localStorage.getItem('token');
 
   if (token !== undefined && token !== null) {
     config.headers['Authorization'] = token;
@@ -27,6 +26,10 @@ const targetURLInterceptor = function(config) {
 const reformatResponse = async function(resp) {
   resp.data = resp.data.data;
 
+  delete(resp.config);
+  delete(resp.headers);
+  delete(resp.request);
+
   return resp;
 }
 
@@ -35,18 +38,12 @@ const handleErrorResponse = async function(error) {
     const cookies = new Cookies(null, {path:'/'});
     const refreshToken = cookies.get('refreshToken');
 
-    // const refreshToken = localStorage.getItem('refreshToken');
-
-    const resp = await axios.post(process.env.NEXT_PUBLIC_BE_HOST + '/auth/refresh-token', {
-      data: {
-        'refreshToken': refreshToken,
-      }
+    const resp = await axios.post(process.env.NEXT_PUBLIC_BE_HOST + 'auth/refresh-token', {
+      'refreshToken': refreshToken,
     });
 
-    cookies.set('token', resp.data.data.token);
+    cookies.set('token', resp.data.data.accessToken);
     cookies.set('refreshToken', resp.data.data.refreshToken);
-    // localStorage.setItem('token', resp.data.data.token);
-    // localStorage.setItem('refreshToken', resp.data.data.refreshToken);
 
     return axiosInstance(error.config);
   }
@@ -63,13 +60,12 @@ axiosInstance.interceptors.response.use(reformatResponse, handleErrorResponse)
 
 
 export async function callGet(path, params) {
-
-  await axiosInstance.get(path, {
+  return await axiosInstance.get(path, {
     params: params,
   }).then(res => {
-    return res
+    return res;
   }).catch(error => {
-    console.log(error);
+    return error.response;
   });
 
 }
@@ -77,6 +73,28 @@ export async function callGet(path, params) {
 export async function callPost(path, data) {
 
   return await axiosInstance.post(path, data)
+    .then(res => {
+      return res;
+    }).catch(error => {
+      return error.response;
+    });
+
+}
+
+export async function callPut(path, data) {
+
+  return await axiosInstance.put(path, data)
+    .then(res => {
+      return res;
+    }).catch(error => {
+      return error.response;
+    });
+
+}
+
+export async function callDelete(path, data) {
+
+  return await axiosInstance.delete(path, data)
     .then(res => {
       return res;
     }).catch(error => {

@@ -1,30 +1,40 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Checkbox, Field, Label } from '@headlessui/react'
 import { useEffect, useState } from "react";
-import { todoActions } from "@/app/store/todo";
+import { deleteTodo, todoActions, updateTodo } from "@/store/todo";
+import dayjs from "dayjs";
+import localizedFormat from 'dayjs/plugin/localizedFormat'
+
+dayjs.extend(localizedFormat);
 
 function TodoItem({todoItem, handleEditTodo}) {
   const [checkboxEnabled, setCheckboxEnabled] = useState(false);
-  const categories = useSelector((state) => state.category.categories);
-  const categoryIdx = categories.findIndex((cat) => cat.id === todoItem.categoryId)
-  const category = categories[categoryIdx];
+  // const categories = useSelector((state) => state.category.categories);
+  // const categoryIdx = categories.findIndex((cat) => cat.id === todoItem.categoryId)
+  // const category = categories[categoryIdx];
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setCheckboxEnabled(todoItem.isDone);
+    setCheckboxEnabled(todoItem.status === 'DONE');
   }, [todoItem])
 
   function handleToggleCheckbox(isChecked) {
-    setCheckboxEnabled(isChecked);
-
-    dispatch(todoActions.toggleTodo({
+    
+    // dispatch(todoActions.toggleTodo({
+    //   id: todoItem.id,
+    // }));
+    const status = isChecked ? "DONE" : "NEW";
+    dispatch(updateTodo({
       id: todoItem.id,
+      status: todoItem, status
     }));
+
+    // setCheckboxEnabled(isChecked);
   }
 
   function handleRemoveTodo(id) {
-    dispatch(todoActions.removeTodo({
+    dispatch(deleteTodo({
       id: id,
     }))
   }
@@ -44,10 +54,13 @@ function TodoItem({todoItem, handleEditTodo}) {
         </Checkbox>
 
         <Label>
-          <span className={checkboxEnabled ? 'line-through text-gray-500' : ''}>{todoItem.title}</span>
-          {category && <span className={`category-${category.color} text-[0.5rem] ml-2 mr-2`}>{category.category}</span> }
+          <span className={checkboxEnabled ? 'line-through text-gray-500' : ''}>{todoItem.message}</span>
+          {/* {category && <span className={`category-${category.color} text-[0.5rem] ml-2 mr-2`}>{category.category}</span> } */}
           
-          <span className="text-sm text-gray-500">- {todoItem.schedule}</span>
+          {todoItem.scheduledAt && 
+            <span className="text-sm text-gray-500">- {dayjs(todoItem.scheduledAt).format("L LT")}</span>
+          }
+          
         </Label>
 
         <button className="btn-default px-1 mt-1 hover:bg-gray-200" onClick={() => handleEditTodo(todoItem)}>

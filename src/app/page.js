@@ -1,10 +1,8 @@
 'use client'
-import Image from "next/image";
-import CategoriesMenu from "./components/categories/CategoriesMenu";
 import { Provider } from "react-redux";
-import store from "./store";
-import TodoLayout from "./components/todo/TodoLayout";
-import Sidebar from "./components/Sidebar";
+import store from "../store";
+import TodoLayout from "@/components/todo/TodoLayout";
+import Sidebar from "@/components/Sidebar";
 
 export default function Home() {
 

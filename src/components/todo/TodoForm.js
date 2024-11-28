@@ -1,7 +1,7 @@
 import { ErrorMessage } from "@hookform/error-message";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { todoActions } from "@/app/store/todo";
+import { todoActions } from "@/store/todo";
 
 function TodoForm({todo, hookOnSubmit, hookOnCancel}) {
   const categories = useSelector(state => state.category.categories);

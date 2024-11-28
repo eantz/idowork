@@ -2,7 +2,7 @@
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message"
-import { categoryActions } from "@/app/store/category";
+import { categoryActions } from "@/store/category";
 
 function FormCategory({category, hookOnSubmit, hookOnCancel}) {
   const dispatch = useDispatch();
